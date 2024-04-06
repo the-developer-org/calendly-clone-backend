@@ -1,4 +1,4 @@
-const database = require('../database/database');
+const { database } = require('../config/database');
 const { INTEGER, STRING, BOOLEAN } = require('sequelize');
 
 const Event = database.define('event', {

@@ -10,8 +10,14 @@ const helmet = require('helmet');
 const bodyParser = require('body-parser');
 const { errorHandler } = require('./middlewares/error');
 
+// impporting error message
+const { NOT_FOUND } = require('./util/errorMessages');
+
+// importing api error function
+const ApiError = require('./util/ApiError');
+
 // importing db
-const connectDb = require('./config/database');
+const { connectDb } = require('./config/database');
 
 const app = express();
 

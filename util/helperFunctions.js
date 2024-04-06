@@ -3,14 +3,14 @@ const bcrypt = require('bcrypt');
 
 // helper function to encode email,password
 const generateToken = (email, password) => {
-  return jwt.sign({ email, password }, process.env.JWT_SECRET);
+  return jwt.sign({ email, password }, process.env.JWT_SECRET_DEV);
 };
 
 // helper function to decode the jwt token
 const decodeToken = (token) => {
   const verifiedData = jwt.verify(
     token,
-    process.env.JWT_SECRET,
+    process.env.JWT_SECRET_DEV,
     (error, decoded) => {
       if (error) {
         return null;
@@ -25,7 +25,7 @@ const decodeToken = (token) => {
 
 // helper function to generate hashpassword
 const generateHashPassword = async (password, salt) => {
-  const hashPassword = await bcrypt.hash(password, salt);
+  const hashPassword = await bcrypt.hash(, salt);
   return hashPassword;
 };
 
