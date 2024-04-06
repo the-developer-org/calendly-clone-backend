@@ -25,22 +25,14 @@ const decodeToken = (token) => {
 
 // helper function to generate hashpassword
 const generateHashPassword = async (password, salt) => {
-  try {
-    const hashPassword = await bcrypt.hash(password, salt);
-    return hashPassword;
-  } catch (error) {
-    throw error;
-  }
+  const hashPassword = await bcrypt.hash(password, salt);
+  return hashPassword;
 };
 
 // helper function to verify  password
 const checkPassword = async (password, encodedValue) => {
-  try {
-    const result = await bcrypt.compare(password, encodedValue);
-    return result;
-  } catch (error) {
-    throw error;
-  }
+  const result = await bcrypt.compare(password, encodedValue);
+  return result;
 };
 
 // exporting

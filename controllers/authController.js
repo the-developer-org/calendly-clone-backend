@@ -1,88 +1,73 @@
-const Util = require('../util/util');
-const util = new Util();
-const adminService = require('../services/adminService');
 const {
   generateHashPassword,
   generateToken,
   checkPassword,
 } = require('../util/helperFunctions');
+const {
+  EMAIL_ALREADY_IN_USE,
+  NOT_FOUND,
+  PASSWORD_MISSMATCH,
+} = require('../util/errorMessages');
+
+const { catchAsync } = require('../util/async');
+const ApiError = require('../util/ApiError');
+const sendSuccessRes = require('../util/sendSuccessRes');
+const adminService = require('../services/adminService');
 
 const authController = {
-  // sign up for admin
-  signUp: async (req, res) => {
+  // Sign up new admin
+  signUp: catchAsync(async (req, res) => {
+    // Extracting required data from request body
     const { name, email, password } = req.body;
 
-    if (!name || !email || !password) {
-      util.setError('500', 'Error in creating account');
-      return util.send({});
+    // Checking if the email is already in use
+    const findAdmin = await adminService.findAdminByEmail(email);
+    if (findAdmin) {
+      // Handling email already in use error
+      const { name, code, message } = EMAIL_ALREADY_IN_USE;
+      throw new ApiError(code, message, name);
     }
 
-    try {
-      const findAdmin = await adminService.findAdminByEmail(email);
+    // Generating hash password and creating new admin
+    const hashPassword = await generateHashPassword(password, 10);
+    await adminService.createAdmin(name, email, hashPassword);
+    const generatedToken = generateToken({ email, password });
 
-      // if the admin is already present
-      if (findAdmin) {
-        util.setError('500', 'Admin already exists');
-        return util.send({});
-      }
-      // generating the hash password
-      const hashPassword = await generateHashPassword(password, 10);
-      // creating the admin
-      await adminService.createAdmin(name, email, hashPassword);
-      // generating the token
-      const generatedToken = generateToken({ email, password });
+    // Sending success response to client
+    return sendSuccessRes(res, 'Account created', 200, {
+      token: generatedToken,
+    });
+  }),
 
-      util.setSuccess(200, 'Account created', {
-        token: generatedToken,
-        name,
-        email,
-      });
-      return util.send(res);
-    } catch (error) {
-      util.setError('500', 'Error in creating account');
-      return util.send({});
-    }
-  },
-
-  // login for admin
-  logIn: async (req, res) => {
+  // Login for admin
+  logIn: catchAsync(async (req, res) => {
+    // Extracting email and password from request body
     const { email, password } = req.body;
 
-    // if something comming null
-    if (!email || !password) {
-      util.setError('500', 'Error while login');
-      return util.send({});
+    // Finding admin by email
+    const findAdmin = adminService.findAdminByEmail(email);
+    if (!findAdmin) {
+      // Handling admin not found error
+      const { name, code, message } = NOT_FOUND;
+      throw new ApiError(code, message, name);
     }
 
-    try {
-      // finding the admin in database
-      const findAdmin = adminService.findAdminByEmail(email);
-      if (!findAdmin) {
-        util.setError('500', 'Admin not found');
-        return util.send({});
-      }
-
-      // matching the passwords
-      const checkPwd = await checkPassword(password, findAdmin.password);
-      if (!checkPwd) {
-        util.setError('500', 'Wrong Password');
-        return util.send({});
-      }
-
-      // generating tokens
-      const generatedToken = generateToken({ email, password });
-      util.setSuccess(200, 'login success', {
-        token: generatedToken,
-        name: findAdmin.name,
-        email: findAdmin.email,
-      });
-
-      return util.send(res);
-    } catch (error) {
-      util.setError('500', 'Error while login');
-      return util.send({});
+    // Checking password match
+    const checkPwd = await checkPassword(password, findAdmin.password);
+    if (!checkPwd) {
+      // Handling password mismatch error
+      const { name, code, message } = PASSWORD_MISSMATCH;
+      throw new ApiError(code, message, name);
     }
-  },
+
+    // Generating token for successful login
+    const generatedToken = generateToken({ email, password });
+
+    // Sending success response to client
+    return sendSuccessRes(res, 'Login Successfully', 200, {
+      token: generatedToken,
+    });
+  }),
 };
 
 module.exports = authController;
