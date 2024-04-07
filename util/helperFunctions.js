@@ -9,7 +9,6 @@ const generateToken = ({ email, password }) => {
 
 // helper function to decode the jwt token
 const decodeToken = (token) => {
-  console.log(token);
   const verifiedData = jwt.verify(
     token,
     config.jwt_secret,

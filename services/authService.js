@@ -13,6 +13,11 @@ const {
 } = require('../util/helperFunctions');
 
 const authService = {
+  /**
+   * Creates a new admin account.
+   * @param {Object} adminData - The admin data including name, email, and password.
+   * @returns {Promise<Object>} A Promise resolving to the created admin object.
+   */
   createAdmin: async ({ name, email, password }) => {
     if (await adminService.findAdminByEmail(email)) {
       const { code, message, name } = EMAIL_ALREADY_IN_USE;
@@ -28,7 +33,12 @@ const authService = {
     return Admin.create({ name, email, password });
   },
 
-  // log in admin service
+  /**
+   * Logs in an admin.
+   * @param {Object} credentials - The admin credentials including email and password.
+   * @returns {Promise<void>} Resolves if login is successful.
+   */
+
   loginAdmin: async ({ email, password }) => {
     const findAdmin = await adminService.findAdminByEmail(email);
     if (!findAdmin) {
@@ -42,7 +52,11 @@ const authService = {
     }
   },
 
-  // verify admin service
+  /**
+   * Verifies admin credentials.
+   * @param {Object} credentials - The admin credentials including email and password.
+   * @returns {Promise<void>} Resolves if credentials are valid.
+   */
   verifyAdmin: async ({ email, password }) => {
     const findAdmin = await adminService.findAdminByEmail(email);
     if (!findAdmin) {

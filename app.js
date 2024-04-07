@@ -1,17 +1,18 @@
 // Importing express
 const express = require('express');
 
-// Imnporting routes
-const authRoutes = require('./routes/authRoute');
-
 // Importing middlewares
 const cors = require('cors');
 const helmet = require('helmet');
-const bodyParser = require('body-parser');
-const { errorHandler } = require('./middlewares/error');
 
-// importing db
+// importing database
 const { connectDb } = require('./config/database');
+
+// Imnporting routes
+const authRoutes = require('./routes/authRoute');
+
+// importing error handelers
+const { errorHandler } = require('./middlewares/error');
 const ApiError = require('./util/ApiError');
 const { NOT_FOUND } = require('./util/errorMessages');
 
@@ -22,8 +23,7 @@ connectDb();
 // Applying middlewares
 app.use(cors());
 app.use(helmet());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+app.use(express.json());
 
 // applying routes
 app.use('/auth', authRoutes);
@@ -35,5 +35,4 @@ app.use('*', (req, res, next) => {
 
 app.use(errorHandler);
 
-// exports
 module.exports = app;

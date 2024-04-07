@@ -1,17 +1,16 @@
 const { Sequelize } = require('sequelize');
 const pg = require('pg');
-const config = require('../config/config');
-
+const { dbConfig } = require('../config/config');
 const { Logger } = require('./logger');
 const moment = require('moment');
 
 const database = new Sequelize(
-  config.dbName,
-  config.dbUserName,
-  config.dbPassword,
+  dbConfig.dbName,
+  dbConfig.dbUserName,
+  dbConfig.dbPassword,
   {
     dialect: 'postgres',
-    host: config.dbHost,
+    host: dbConfig.dbHost,
     logging: false,
     dialectModule: pg,
   }
