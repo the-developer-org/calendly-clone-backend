@@ -40,6 +40,11 @@ exports.GENERATE_TOKEN_ERROR = {
   name: 'INTERNAL_SERVER_ERROR',
   message: 'Error while generating token',
 };
+exports.DECODE_TOKEN_ERROR = {
+  code: 500,
+  name: 'INTERNAL_SERVER_ERROR',
+  message: 'Error while decoding token',
+};
 
 exports.GENERATE_HASH_ERROR = {
   code: 500,

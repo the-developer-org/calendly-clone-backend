@@ -5,12 +5,11 @@ const sendSuccessRes = (
   name = '',
   data = {}
 ) => {
-  const result = {
+  return res.status(code).json({
     message,
-    data,
+    ...data,
     status: name,
-  };
-  return res.status(code).json(result);
+  });
 };
 
 module.exports = sendSuccessRes;

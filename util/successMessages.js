@@ -9,3 +9,9 @@ exports.LOGIN_SUCCESS = {
   name: 'OK',
   message: 'Login success',
 };
+
+exports.USER_VERFIED = {
+  code: 200,
+  name: 'OK',
+  message: 'User verified',
+};

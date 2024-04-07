@@ -9,9 +9,10 @@ const generateToken = ({ email, password }) => {
 
 // helper function to decode the jwt token
 const decodeToken = (token) => {
+  console.log(token);
   const verifiedData = jwt.verify(
     token,
-    process.env.JWT_SECRET_DEV,
+    config.jwt_secret,
     (error, decoded) => {
       if (error) {
         return null;

@@ -15,6 +15,11 @@ exports.login = {
     password: Joi.string().required().custom(password),
   }),
 };
+exports.verify = {
+  body: Joi.object().keys({
+    token: Joi.string().required(),
+  }),
+};
 
 exports.verifyEmail = {
   params: Joi.object().keys({

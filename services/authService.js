@@ -41,6 +41,21 @@ const authService = {
       throw new ApiError(code, message, name);
     }
   },
+
+  // verify admin service
+  verifyAdmin: async ({ email, password }) => {
+    const findAdmin = await adminService.findAdminByEmail(email);
+    if (!findAdmin) {
+      const { code, message, name } = USER_NOT_FOUND;
+      throw new ApiError(code, message, name);
+    }
+
+    const isValidPassword = await checkPassword(password, findAdmin.password);
+    if (!isValidPassword) {
+      const { code, message, name } = PASSWORD_MISSMATCH;
+      throw new ApiError(code, message, name);
+    }
+  },
 };
 
 module.exports = authService;

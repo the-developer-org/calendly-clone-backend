@@ -1,10 +1,17 @@
-const { generateToken } = require('../util/helperFunctions');
+const { generateToken, decodeToken } = require('../util/helperFunctions');
 const { catchAsync } = require('../util/async');
 const sendSuccessRes = require('../util/sendSuccessRes');
 const ApiError = require('../util/ApiError');
 const authService = require('../services/authService');
-const { GENERATE_TOKEN_ERROR } = require('../util/errorMessages');
-const { ACCOUNT_CREATED, LOGIN_SUCCESS } = require('../util/successMessages');
+const {
+  GENERATE_TOKEN_ERROR,
+  DECODE_TOKEN_ERROR,
+} = require('../util/errorMessages');
+const {
+  ACCOUNT_CREATED,
+  LOGIN_SUCCESS,
+  USER_VERFIED,
+} = require('../util/successMessages');
 
 const authController = {
   /**
@@ -23,7 +30,13 @@ const authController = {
       throw new ApiError(code, message, error);
     }
     const { code, name, message } = ACCOUNT_CREATED;
-    return sendSuccessRes(res, message, code, name);
+    const result = {
+      token,
+      name: req.body.name,
+      email: req.body.email,
+    };
+
+    return sendSuccessRes(res, message, code, name, result);
   }),
 
   /**
@@ -41,7 +54,35 @@ const authController = {
       throw new ApiError(code, message, error);
     }
     const { code, name, message } = LOGIN_SUCCESS;
-    return sendSuccessRes(res, message, code, name);
+    const result = {
+      token,
+      name: req.body.name,
+      email: req.body.email,
+    };
+    return sendSuccessRes(res, message, code, name, result);
+  }),
+
+  /**
+   * Handles verfication for admin.
+   * @function verify
+   * @param {Object} req - The request object.
+   * @param {Object} res - The response object.
+   * @returns {Promise<void>} Resolves when login process completes.
+   */
+  verify: catchAsync(async (req, res) => {
+    const decodedToken = decodeToken(req.body.token);
+
+    if (!decodedToken) {
+      const { code, message, name } = DECODE_TOKEN_ERROR;
+      throw new ApiError(code, message, name);
+    }
+    await authService.verifyAdmin(decodedToken);
+    const { code, name, message } = USER_VERFIED;
+    const result = {
+      token: req.body.token,
+      email: decodedToken.email,
+    };
+    return sendSuccessRes(res, message, code, name, result);
   }),
 };
 

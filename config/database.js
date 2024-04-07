@@ -28,7 +28,7 @@ const connectDb = async () => {
     Logger.log('error', {
       errorCode: 'POSTGRESERROR',
       message: 'Error while connecting to Postgres server',
-      source: 'postgres',
+      source: 'postgres_connection',
       reason: 'connection_failure',
       stack: error.stack,
     });
