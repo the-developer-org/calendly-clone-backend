@@ -1,20 +1,17 @@
 const { Sequelize } = require('sequelize');
 const pg = require('pg');
-const { dbConfig } = require('../config/config');
+const config = require('../config/config');
 const { Logger } = require('./logger');
 const moment = require('moment');
 
-const database = new Sequelize(
-  dbConfig.dbName,
-  dbConfig.dbUserName,
-  dbConfig.dbPassword,
-  {
-    dialect: 'postgres',
-    host: dbConfig.dbHost,
-    logging: false,
-    dialectModule: pg,
-  }
-);
+const { name, username, password, host } = config.database;
+
+const database = new Sequelize(name, username, password, {
+  dialect: 'postgres',
+  host: host,
+  logging: false,
+  dialectModule: pg,
+});
 
 const connectDb = async () => {
   try {
