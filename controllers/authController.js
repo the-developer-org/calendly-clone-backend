@@ -1,72 +1,47 @@
-const {
-  generateHashPassword,
-  generateToken,
-  checkPassword,
-} = require('../util/helperFunctions');
-const {
-  EMAIL_ALREADY_IN_USE,
-  NOT_FOUND,
-  PASSWORD_MISSMATCH,
-} = require('../util/errorMessages');
-
+const { generateToken } = require('../util/helperFunctions');
 const { catchAsync } = require('../util/async');
-const ApiError = require('../util/ApiError');
 const sendSuccessRes = require('../util/sendSuccessRes');
-const adminService = require('../services/adminService');
+const ApiError = require('../util/ApiError');
+const authService = require('../services/authService');
+const { GENERATE_TOKEN_ERROR } = require('../util/errorMessages');
+const { ACCOUNT_CREATED, LOGIN_SUCCESS } = require('../util/successMessages');
 
 const authController = {
-  // Sign up new admin
+  /**
+   * Handles Admin signup.
+   * @function signUp
+   * @param {Object} req - The request object.
+   * @param {Object} res - The response object.
+   * @returns {Promise<void>} Resolves when sign-up process completes.
+   */
+
   signUp: catchAsync(async (req, res) => {
-    // Extracting required data from request body
-    const { name, email, password } = req.body;
-
-    // Checking if the email is already in use
-    const findAdmin = await adminService.findAdminByEmail(email);
-    if (findAdmin) {
-      // Handling email already in use error
-      const { name, code, message } = EMAIL_ALREADY_IN_USE;
-      throw new ApiError(code, message, name);
+    await authService.createAdmin(req.body);
+    const token = generateToken(req.body);
+    if (!token) {
+      const { code, error, message } = GENERATE_TOKEN_ERROR;
+      throw new ApiError(code, message, error);
     }
-
-    // Generating hash password and creating new admin
-    const hashPassword = await generateHashPassword(password, 10);
-    await adminService.createAdmin(name, email, hashPassword);
-    const generatedToken = generateToken({ email, password });
-
-    // Sending success response to client
-    return sendSuccessRes(res, 'Account created', 200, {
-      token: generatedToken,
-    });
+    const { code, name, message } = ACCOUNT_CREATED;
+    return sendSuccessRes(res, message, code, name);
   }),
 
-  // Login for admin
+  /**
+   * Handles admin login.
+   * @function logIn
+   * @param {Object} req - The request object.
+   * @param {Object} res - The response object.
+   * @returns {Promise<void>} Resolves when login process completes.
+   */
   logIn: catchAsync(async (req, res) => {
-    // Extracting email and password from request body
-    const { email, password } = req.body;
-
-    // Finding admin by email
-    const findAdmin = adminService.findAdminByEmail(email);
-    if (!findAdmin) {
-      // Handling admin not found error
-      const { name, code, message } = NOT_FOUND;
-      throw new ApiError(code, message, name);
+    await authService.loginAdmin(req.body);
+    const token = generateToken(req.body);
+    if (!token) {
+      const { code, error, message } = GENERATE_TOKEN_ERROR;
+      throw new ApiError(code, message, error);
     }
-
-    // Checking password match
-    const checkPwd = await checkPassword(password, findAdmin.password);
-    if (!checkPwd) {
-      // Handling password mismatch error
-      const { name, code, message } = PASSWORD_MISSMATCH;
-      throw new ApiError(code, message, name);
-    }
-
-    // Generating token for successful login
-    const generatedToken = generateToken({ email, password });
-
-    // Sending success response to client
-    return sendSuccessRes(res, 'Login Successfully', 200, {
-      token: generatedToken,
-    });
+    const { code, name, message } = LOGIN_SUCCESS;
+    return sendSuccessRes(res, message, code, name);
   }),
 };
 

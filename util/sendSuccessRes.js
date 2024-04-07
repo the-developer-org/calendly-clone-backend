@@ -1,10 +1,16 @@
-const sendSuccessRes = (res, message, statusCode = 200, data) => {
+const sendSuccessRes = (
+  res,
+  message = '',
+  code = 200,
+  name = '',
+  data = {}
+) => {
   const result = {
     message,
     data,
-    status: 'Success',
+    status: name,
   };
-  return res.status(statusCode).send(result);
+  return res.status(code).json(result);
 };
 
 module.exports = sendSuccessRes;

@@ -5,6 +5,7 @@ const config = {
     dbUserName: process.env.DB_USERNAME_DEV,
     dbPassword: process.env.DB_PASSWORD_DEV,
     dbHost: process.env.DB_HOST_DEV,
+    jwt_secret: process.env.JWT_SECRET_DEV,
   },
   production: {
     port: process.env.PROD_PORT,

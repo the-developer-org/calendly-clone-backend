@@ -1,7 +1,9 @@
 const { Sequelize } = require('sequelize');
 const pg = require('pg');
 const config = require('../config/config');
+
 const { Logger } = require('./logger');
+const moment = require('moment');
 
 const database = new Sequelize(
   config.dbName,
@@ -18,6 +20,10 @@ const database = new Sequelize(
 const connectDb = async () => {
   try {
     await database.sync();
+    const serverStartTime = moment().format();
+    Logger.log('info', {
+      message: `Database successfully conected on ${serverStartTime}`,
+    });
   } catch (error) {
     Logger.log('error', {
       errorCode: 'POSTGRESERROR',

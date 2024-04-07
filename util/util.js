@@ -1,9 +1,20 @@
+const { logger } = require('../config/logger');
 class Util {
   constructor() {
     this.message = null;
     this.statusCode = null;
     this.type = null;
     this.data = null;
+  }
+  /**
+   * Log error using the Logger
+   */
+  logError() {
+    logger.error({
+      message: this.message,
+      statusCode: this.statusCode,
+      type: this.type,
+    });
   }
 
   /**
