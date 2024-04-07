@@ -1,21 +1,25 @@
 const { database } = require('../config/database');
 const { STRING, INTEGER } = require('sequelize');
 
-const User = database.define('user', {
+const Slot = database.define('slot', {
   id: {
     type: INTEGER,
-    primaryKey: true,
     allowNull: false,
     autoIncrement: true,
+    primaryKey: true,
   },
-  email: {
+  date: {
     type: STRING,
     allowNull: false,
   },
-  name: {
+  startTime: {
+    type: STRING,
+    allowNull: false,
+  },
+  endTime: {
     type: STRING,
     allowNull: false,
   },
 });
 
-module.exports = User;
+module.exports = Slot;
