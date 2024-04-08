@@ -47,7 +47,7 @@ const authController = {
    * @returns {Promise<void>} Resolves when login process completes.
    */
   logIn: catchAsync(async (req, res) => {
-    await authService.loginAdmin(req.body);
+    const admin = await authService.loginAdmin(req.body);
     const token = generateToken(req.body);
     if (!token) {
       const { code, error, message } = GENERATE_TOKEN_ERROR;
@@ -56,8 +56,8 @@ const authController = {
     const { code, name, message } = LOGIN_SUCCESS;
     const result = {
       token,
-      name: req.body.name,
-      email: req.body.email,
+      name: admin.name,
+      email: admin.email,
     };
     return sendSuccessRes(res, message, code, name, result);
   }),
@@ -76,11 +76,12 @@ const authController = {
       const { code, message, name } = DECODE_TOKEN_ERROR;
       throw new ApiError(code, message, name);
     }
-    await authService.verifyAdmin(decodedToken);
+    const admin = await authService.verifyAdmin(decodedToken);
     const { code, name, message } = USER_VERFIED;
     const result = {
+      name: admin.name,
       token: req.body.token,
-      email: decodedToken.email,
+      email: admin.email,
     };
     return sendSuccessRes(res, message, code, name, result);
   }),
