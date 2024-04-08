@@ -50,6 +50,8 @@ const authService = {
       const { code, message, name } = PASSWORD_MISSMATCH;
       throw new ApiError(code, message, name);
     }
+
+    return findAdmin;
   },
 
   /**
@@ -69,6 +71,8 @@ const authService = {
       const { code, message, name } = PASSWORD_MISSMATCH;
       throw new ApiError(code, message, name);
     }
+
+    return findAdmin;
   },
 };
 
