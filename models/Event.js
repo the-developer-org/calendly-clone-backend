@@ -1,5 +1,5 @@
 const { database } = require('../config/database');
-const { INTEGER, STRING, BOOLEAN } = require('sequelize');
+const { INTEGER, STRING, BOOLEAN, TIME, DATE, JSONB } = require('sequelize');
 
 const Event = database.define('event', {
   id: {
@@ -13,23 +13,23 @@ const Event = database.define('event', {
     allowNull: false,
   },
   duration: {
-    type: STRING,
+    type: INTEGER,
     allowNull: false,
   },
   startDate: {
-    type: STRING,
+    type: DATE,
     allowNull: false,
   },
   endDate: {
-    type: STRING,
+    type: DATE,
     allowNull: false,
   },
   startTime: {
-    type: STRING,
+    type: TIME,
     allowNull: false,
   },
   endTime: {
-    type: STRING,
+    type: TIME,
     allowNull: false,
   },
   meetingLink: {
@@ -43,6 +43,18 @@ const Event = database.define('event', {
   isActive: {
     type: BOOLEAN,
     defaultValue: true,
+  },
+  slots: {
+    type: JSONB,
+    allowNull: false,
+  },
+  bufferTime: {
+    type: INTEGER,
+    allowNull: false,
+  },
+  mode: {
+    type: STRING,
+    allowNull: false,
   },
 });
 
