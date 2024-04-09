@@ -20,6 +20,11 @@ exports.verify = {
     token: Joi.string().required(),
   }),
 };
+exports.auth = {
+  headers: Joi.object().keys({
+    token: Joi.string().required(),
+  }),
+};
 
 exports.verifyEmail = {
   params: Joi.object().keys({

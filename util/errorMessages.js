@@ -51,3 +51,21 @@ exports.GENERATE_HASH_ERROR = {
   name: 'INTERNAL_SERVER_ERROR',
   message: 'Error while generating hash password',
 };
+
+exports.SLOT_CREATION_ERROR = {
+  code: 400,
+  name: 'BAD_REQUEST',
+  message: 'Error while creating the slots',
+};
+
+exports.EVENT_CREATION_ERROR = {
+  code: 500,
+  name: 'INTERNAL_SERVER_ERROR',
+  message: 'Error while creating the event',
+};
+
+exports.TOKEN_MISSING = {
+  code: 401,
+  name: 'UNAUTHORIZED',
+  message: 'Token not found',
+};
