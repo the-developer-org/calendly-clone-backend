@@ -20,3 +20,8 @@ exports.deleteEvent = {
     eventId: Joi.number().required(),
   }),
 };
+exports.findEvent = {
+  params: Joi.object().keys({
+    eventId: Joi.number().required(),
+  }),
+};

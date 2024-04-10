@@ -54,12 +54,7 @@ const eventController = {
    * @returns {Promise} Resolves when event-fetching process completes.
    */
   getEventByEventId: catchAsync(async (req, res) => {
-    const { eventId } = req.params;
-    if (!eventId) {
-      const { code, name, message } = BAD_REQUEST;
-      throw new ApiError(code, message, name);
-    }
-    const findedEvent = await eventService.findEvent(eventId);
+    const findedEvent = await eventService.findEvent(req.params);
     if (!findedEvent) {
       const { code, name, message } = EVENT_NOT_FOUND;
       throw new ApiError(code, message, name);
