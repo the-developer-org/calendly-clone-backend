@@ -26,7 +26,7 @@ const eventController = {
 
   /**
    * For getting all the events.
-   * @function createEvent
+   * @function getEvents
    * @param {Object} req - The request object.
    * @param {Object} res - The response object.
    * @returns {Promise} Resolves when event-fetching process completes.

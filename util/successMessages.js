@@ -22,6 +22,12 @@ exports.EVENT_CREATED = {
   message: 'Event created successfully',
 };
 
+exports.SLOT_CREATED = {
+  code: 201,
+  name: 'CREATED',
+  message: 'Slot created successfully',
+};
+
 exports.FETCH_ALL_EVENTS = {
   code: 200,
   name: 'OK',

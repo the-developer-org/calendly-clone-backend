@@ -130,6 +130,29 @@ const createSlots = (
 
   return slots;
 };
+
+const updateAvailability = (availableSlots, dateObject, startTime, endTime) => {
+  const dateKey = dateObject.toISOString();
+  const slots = availableSlots[dateKey];
+
+  if (!slots) {
+    return null;
+  }
+
+  slots.forEach((slot) => {
+    const slotStartTime = new Date(slot.startTime).getTime();
+    const slotEndTime = new Date(slot.endTime).getTime();
+    const rangeStartTime = new Date(startTime).getTime();
+    const rangeEndTime = new Date(endTime).getTime();
+
+    if (slotStartTime >= rangeStartTime && slotEndTime <= rangeEndTime) {
+      slot.availability = false;
+    }
+  });
+
+  return availableSlots;
+};
+
 // exporting
 module.exports = {
   generateHashPassword,
@@ -137,4 +160,5 @@ module.exports = {
   decodeToken,
   checkPassword,
   createSlots,
+  updateAvailability,
 };

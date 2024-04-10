@@ -1,7 +1,10 @@
 const ApiError = require('../util/ApiError');
 const Event = require('../models/Event');
-const { SLOT_CREATION_ERROR } = require('../util/errorMessages');
-const { createSlots } = require('../util/helperFunctions');
+const {
+  SLOT_CREATION_ERROR,
+  SLOT_NOT_FOUND,
+} = require('../util/errorMessages');
+const { createSlots, updateAvailability } = require('../util/helperFunctions');
 
 const eventService = {
   createEvent: async (body, admin) => {
@@ -48,6 +51,30 @@ const eventService = {
 
   getEvents: async (admin) => {
     return Event.findAll({ where: { adminId: admin.id, isActive: true } });
+  },
+
+  findEvent: async (body) => {
+    return Event.findOne({ where: { id: body.eventId } });
+  },
+
+  updateEventSlotAvalibility: async (event, body, transaction) => {
+    const { date, eventStartTime, eventEndTime } = body;
+    const updatedSlots = updateAvailability(
+      event.availableSlots,
+      date,
+      eventStartTime,
+      eventEndTime
+    );
+
+    if (!updatedSlots) {
+      const { code, name, message } = SLOT_NOT_FOUND;
+      throw new ApiError(code, message, name);
+    }
+    return Event.update(
+      { availableSlots: updatedSlots },
+      { where: { id: event.id } },
+      transaction
+    );
   },
 };
 
