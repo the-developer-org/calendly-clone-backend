@@ -9,7 +9,7 @@ const relations = require('./relations/relations');
 
 const authRoutes = require('./routes/authRoute');
 const eventRoutes = require('./routes/eventRoutes');
-
+const slotRoutes = require('./routes/slotRoutes');
 const app = express();
 
 relations();
@@ -25,6 +25,7 @@ app.use(express.json());
 
 app.use('/auth', authRoutes);
 app.use('/event', eventRoutes);
+app.use('/slot', slotRoutes);
 app.use('*', (req, res, next) => {
   const { code, message, name } = NOT_FOUND;
   next(new ApiError(code, message, name));
