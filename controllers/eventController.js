@@ -3,7 +3,7 @@ const ApiError = require('../util/ApiError');
 const { catchAsync } = require('../util/async');
 const { EVENT_CREATION_ERROR } = require('../util/errorMessages');
 const sendSuccessRes = require('../util/sendSuccessRes');
-const { EVENT_CREATED } = require('../util/successMessages');
+const { EVENT_CREATED, FETCH_ALL_EVENTS } = require('../util/successMessages');
 
 const eventController = {
   /**
@@ -22,6 +22,19 @@ const eventController = {
 
     const { code, name, message } = EVENT_CREATED;
     return sendSuccessRes(res, message, code, name, createdEvent);
+  }),
+
+  /**
+   * For getting all the events.
+   * @function createEvent
+   * @param {Object} req - The request object.
+   * @param {Object} res - The response object.
+   * @returns {Promise} Resolves when event-fetching process completes.
+   */
+  getEvents: catchAsync(async (req, res) => {
+    const allEvents = await eventService.getEvents(req.admin);
+    const { code, name, message } = FETCH_ALL_EVENTS;
+    return sendSuccessRes(res, message, code, name, allEvents);
   }),
 };
 

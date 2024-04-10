@@ -45,6 +45,10 @@ const eventService = {
       adminId: admin.id,
     });
   },
+
+  getEvents: async (admin) => {
+    return Event.findAll({ where: { adminId: admin.id, isActive: true } });
+  },
 };
 
 module.exports = eventService;

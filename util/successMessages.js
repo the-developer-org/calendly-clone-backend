@@ -21,3 +21,9 @@ exports.EVENT_CREATED = {
   name: 'CREATED',
   message: 'Event created successfully',
 };
+
+exports.FETCH_ALL_EVENTS = {
+  code: 200,
+  name: 'OK',
+  message: 'All fetched',
+};
