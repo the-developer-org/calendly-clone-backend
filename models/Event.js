@@ -44,7 +44,7 @@ const Event = database.define('event', {
     type: BOOLEAN,
     defaultValue: true,
   },
-  slots: {
+  availableSlots: {
     type: JSONB,
     allowNull: false,
   },

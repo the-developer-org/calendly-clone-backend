@@ -6,4 +6,7 @@ const Event = require('../models/Event');
 module.exports = () => {
   Admin.hasMany(Event);
   Event.belongsTo(Admin);
+
+  Event.hasMany(Slot);
+  Slot.belongsTo(Event);
 };

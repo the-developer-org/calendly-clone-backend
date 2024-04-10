@@ -6,12 +6,12 @@ const router = express.Router();
 const auth = require('../middlewares/auth');
 
 router.post(
-  '/createevent',
+  '/create-event',
   auth,
   validate(eventValidation.createEvent),
   eventController.createEvent
 );
 
-router.get('/getevents', auth, eventController.getEvents);
+router.get('/get-events', auth, eventController.getEvents);
 
 module.exports = router;

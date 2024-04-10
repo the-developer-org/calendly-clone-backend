@@ -20,6 +20,10 @@ const Slot = database.define('slot', {
     type: STRING,
     allowNull: false,
   },
+  userId: {
+    type: INTEGER,
+    allowNull: false,
+  },
 });
 
 module.exports = Slot;

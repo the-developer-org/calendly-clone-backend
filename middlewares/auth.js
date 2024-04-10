@@ -6,12 +6,12 @@ const { decodeToken } = require('../util/helperFunctions');
 const auth = async (req, res, next) => {
   if (!req.headers.authorization) {
     const { code, message, name } = TOKEN_MISSING;
-    throw new ApiError(code, message, name);
+    next(new ApiError(code, message, name));
   }
   const decodedToken = decodeToken(req.headers.authorization);
   if (!decodedToken) {
     const { code, message, name } = DECODE_TOKEN_ERROR;
-    throw new ApiError(code, message, name);
+    next(new ApiError(code, message, name));
   }
 
   const admin = await authService.verifyAdmin(decodedToken);

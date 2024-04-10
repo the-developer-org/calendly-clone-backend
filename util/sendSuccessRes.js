@@ -7,7 +7,7 @@ const sendSuccessRes = (
 ) => {
   return res.status(code).json({
     message,
-    ...data,
+    data,
     status: name,
   });
 };
