@@ -53,11 +53,7 @@ const eventService = {
     return Event.findAll({ where: { adminId: admin.id, isActive: true } });
   },
 
-  findEvent: async (eventId) => {
-    return Event.findOne({ where: { id: eventId } });
-  },
-
-  getEventById: async ({ eventId }) => {
+  findEvent: async ({ eventId }) => {
     return Event.findOne({ where: { id: eventId } });
   },
 
