@@ -76,6 +76,13 @@ const eventService = {
       transaction
     );
   },
+
+  deleteEvent: async (body, admin) => {
+    return Event.update(
+      { isActive: false },
+      { where: { id: body.eventId, adminId: admin.id } }
+    );
+  },
 };
 
 module.exports = eventService;

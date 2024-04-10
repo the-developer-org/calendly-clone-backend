@@ -13,5 +13,10 @@ router.post(
 );
 
 router.get('/get-events', auth, eventController.getEvents);
-
+router.delete(
+  '/delete-event',
+  auth,
+  validate(eventValidation.deleteEvent),
+  eventController.deleteEvent
+);
 module.exports = router;

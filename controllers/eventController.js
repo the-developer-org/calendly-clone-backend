@@ -3,7 +3,11 @@ const ApiError = require('../util/ApiError');
 const { catchAsync } = require('../util/async');
 const { EVENT_CREATION_ERROR } = require('../util/errorMessages');
 const sendSuccessRes = require('../util/sendSuccessRes');
-const { EVENT_CREATED, FETCH_ALL_EVENTS } = require('../util/successMessages');
+const {
+  EVENT_CREATED,
+  FETCH_ALL_EVENTS,
+  EVENT_DELETED,
+} = require('../util/successMessages');
 
 const eventController = {
   /**
@@ -35,6 +39,12 @@ const eventController = {
     const allEvents = await eventService.getEvents(req.admin);
     const { code, name, message } = FETCH_ALL_EVENTS;
     return sendSuccessRes(res, message, code, name, allEvents);
+  }),
+
+  deleteEvent: catchAsync(async (req, res) => {
+    await eventService.deleteEvent(req.body, req.admin);
+    const { code, name, message } = EVENT_DELETED;
+    return sendSuccessRes(res, message, code, name);
   }),
 };
 
