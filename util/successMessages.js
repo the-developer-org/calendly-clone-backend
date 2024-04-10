@@ -33,3 +33,15 @@ exports.FETCH_ALL_EVENTS = {
   name: 'OK',
   message: 'All fetched',
 };
+
+exports.EVENT_DELETED = {
+  code: 204,
+  name: 'OK',
+  message: 'Event deleted successfully',
+};
+
+exports.FETCH_EVENT_BYID = {
+  code: 200,
+  name: 'OK',
+  message: 'Event fetched successfully',
+};
