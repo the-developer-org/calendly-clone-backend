@@ -40,7 +40,7 @@ const eventService = {
       meetingLink,
       description,
       bufferTime,
-      slots,
+      availableSlots: slots,
       mode,
       adminId: admin.id,
     });
