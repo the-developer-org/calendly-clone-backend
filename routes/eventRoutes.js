@@ -13,6 +13,7 @@ router.post(
 );
 
 router.get('/get-events', auth, eventController.getEvents);
+router.get('/get-event-byeventid', eventController.getEventByEventId);
 router.delete(
   '/delete-event',
   auth,

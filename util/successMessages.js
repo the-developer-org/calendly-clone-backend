@@ -39,3 +39,9 @@ exports.EVENT_DELETED = {
   name: 'OK',
   message: 'Event deleted successfully',
 };
+
+exports.FETCH_EVENT_BYID = {
+  code: 200,
+  name: 'OK',
+  message: 'Event fetched successfully',
+};

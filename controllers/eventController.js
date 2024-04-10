@@ -1,12 +1,17 @@
 const eventService = require('../services/eventService');
 const ApiError = require('../util/ApiError');
 const { catchAsync } = require('../util/async');
-const { EVENT_CREATION_ERROR } = require('../util/errorMessages');
+const {
+  EVENT_CREATION_ERROR,
+  EVENT_NOT_FOUND,
+  BAD_REQUEST,
+} = require('../util/errorMessages');
 const sendSuccessRes = require('../util/sendSuccessRes');
 const {
   EVENT_CREATED,
   FETCH_ALL_EVENTS,
   EVENT_DELETED,
+  FETCH_EVENT_BYID,
 } = require('../util/successMessages');
 
 const eventController = {
@@ -41,6 +46,35 @@ const eventController = {
     return sendSuccessRes(res, message, code, name, allEvents);
   }),
 
+  /**
+   * For getting the event by the id.
+   * @function getEventByEventId
+   * @param {Object} req - The request object.
+   * @param {Object} res - The response object.
+   * @returns {Promise} Resolves when event-fetching process completes.
+   */
+  getEventByEventId: catchAsync(async (req, res) => {
+    const { eventId } = req.params;
+    if (!eventId) {
+      const { code, name, message } = BAD_REQUEST;
+      throw new ApiError(code, message, name);
+    }
+    const findedEvent = await eventService.findEvent(eventId);
+    if (!findedEvent) {
+      const { code, name, message } = EVENT_NOT_FOUND;
+      throw new ApiError(code, message, name);
+    }
+    const { code, name, message } = FETCH_EVENT_BYID;
+    return sendSuccessRes(res, message, code, name, findedEvent);
+  }),
+
+  /**
+   * For deleting the event by the id.
+   * @function deleteEvent
+   * @param {Object} req - The request object.
+   * @param {Object} res - The response object.
+   * @returns {Promise} Resolves when event-fetching process completes.
+   */
   deleteEvent: catchAsync(async (req, res) => {
     await eventService.deleteEvent(req.body, req.admin);
     const { code, name, message } = EVENT_DELETED;

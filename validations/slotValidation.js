@@ -11,4 +11,11 @@ exports.bookSlot = {
   }),
 };
 
+exports.getSlot = {
+  body: Joi.object().keys({
+    eventId: Joi.number().required(),
+    userId: Joi.number().required(),
+  }),
+};
+
 module;
