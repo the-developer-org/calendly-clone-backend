@@ -15,3 +15,9 @@ exports.USER_VERFIED = {
   name: 'OK',
   message: 'User verified',
 };
+
+exports.EVENT_CREATED = {
+  code: 201,
+  name: 'CREATED',
+  message: 'Event created successfully',
+};

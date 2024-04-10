@@ -34,10 +34,107 @@ const checkPassword = async (password, encodedValue) => {
   return bcrypt.compare(password, encodedValue);
 };
 
+/**
+ * Function to parse the time input
+ * @param {*} timeStr
+ * @returns
+ */
+const parseTimeInput = (timeStr) => {
+  // Split the time string into hours and minutes
+  const [hours, minutes] = timeStr.split(':').map(Number);
+
+  // Return a Date object with the time set
+  return new Date(0, 0, 0, hours, minutes);
+};
+
+/**
+ * Function to create slot
+ * @param {*} startDate
+ * @param {*} endDate
+ * @param {*} startTime
+ * @param {*} endTime
+ * @param {*} slotDuration
+ * @param {*} bufferTime
+ * @returns {Object}
+ */
+const createSlots = (
+  startDate,
+  endDate,
+  startTime,
+  endTime,
+  slotDuration,
+  bufferTime
+) => {
+  console.log(startDate);
+  console.log(endDate);
+  const startDateTime = parseTimeInput(startTime).getTime();
+  const endDateTime = parseTimeInput(endTime).getTime();
+  const bufferTimeMs = bufferTime * 60 * 1000; // Convert buffer time to milliseconds
+
+  // Check if buffer time is longer than time difference between start and end time
+  if (endDateTime - startDateTime <= bufferTimeMs) {
+    return null; // Buffer time is too long, return null
+  }
+
+  const slots = {};
+  const totalDurationMs = endDateTime - startDateTime - bufferTimeMs;
+  const totalDurationMinutes = totalDurationMs / (1000 * 60);
+  const slotsPerDay = Math.floor(totalDurationMinutes / slotDuration);
+
+  // Handle edge case: If slotsPerDay is 0, buffer time is too long
+  if (slotsPerDay <= 0) {
+    return null; // Buffer time is too long, return null
+  }
+
+  for (
+    let currentDate = new Date(startDate);
+    currentDate <= new Date(endDate);
+    currentDate.setDate(currentDate.getDate() + 1)
+  ) {
+    let currentTime = parseTimeInput(startTime);
+    slots[currentDate] = [];
+    for (let i = 0; i < slotsPerDay; i++) {
+      const slotStartTime = currentTime.toLocaleTimeString('en-US', {
+        hour12: false, // Use 24-hour format
+        hour: '2-digit',
+        minute: '2-digit',
+      });
+      currentTime.setMinutes(currentTime.getMinutes() + slotDuration);
+
+      // Check if the calculated end time exceeds the event end time
+      if (currentTime.getTime() + bufferTimeMs > endDateTime) {
+        break;
+      }
+
+      const slotEndTime = currentTime.toLocaleTimeString('en-US', {
+        hour12: false, // Use 24-hour format
+        hour: '2-digit',
+        minute: '2-digit',
+      });
+
+      slots[currentDate].push({
+        date: new Date(
+          currentDate.getFullYear(),
+          currentDate.getMonth(),
+          currentDate.getDate()
+        ),
+        startTime: slotStartTime,
+        endTime: slotEndTime,
+        duration: `${slotDuration} Minutes`,
+        availability: true,
+      });
+
+      currentTime.setMinutes(currentTime.getMinutes() + bufferTime);
+    }
+  }
+
+  return slots;
+};
 // exporting
 module.exports = {
+  generateHashPassword,
   generateToken,
   decodeToken,
   checkPassword,
-  generateHashPassword,
+  createSlots,
 };
