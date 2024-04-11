@@ -18,7 +18,7 @@ router.get(
   validate(eventValidation.findEvent),
   eventController.getEventByEventId
 );
-router.delete(
+router.post(
   '/delete-event',
   auth,
   validate(eventValidation.deleteEvent),
