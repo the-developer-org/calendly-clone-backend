@@ -5,7 +5,7 @@ exports.bookSlot = {
     eventId: Joi.number().required(),
     userName: Joi.string().required(),
     userEmail: Joi.string().required(),
-    eventdate: Joi.date().required(),
+    eventDate: Joi.date().required(),
     eventStartTime: Joi.string().required(),
     eventEndTime: Joi.string().required(),
   }),

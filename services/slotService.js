@@ -19,9 +19,15 @@ const slotService = {
   },
   getBookedSlots: async ({ id }) => {
     return Event.findAll({
+      attributes: ['name', 'mode'],
       where: { adminId: id, isActive: true },
-      attribute: ['name'],
-      include: [{ model: Slot, include: [{ model: User }] }],
+      include: [
+        {
+          model: Slot,
+          attributes: ['eventDate', 'eventStartTime', 'eventEndTime', 'id'],
+          include: [{ model: User, attributes: ['email', 'name'] }],
+        },
+      ],
     });
   },
 };

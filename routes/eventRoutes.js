@@ -14,7 +14,7 @@ router.post(
 
 router.get('/get-events', auth, eventController.getEvents);
 router.get(
-  '/get-event/:eventid',
+  '/get-event/:eventId',
   validate(eventValidation.findEvent),
   eventController.getEventByEventId
 );

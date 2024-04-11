@@ -20,10 +20,6 @@ const Slot = database.define('slot', {
     type: TIME,
     allowNull: false,
   },
-  userId: {
-    type: INTEGER,
-    allowNull: false,
-  },
 });
 
 module.exports = Slot;
