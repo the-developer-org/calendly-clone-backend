@@ -1,4 +1,3 @@
-const { Sequelize } = require('sequelize');
 const eventService = require('../services/eventService');
 const ApiError = require('../util/ApiError');
 const { catchAsync } = require('../util/async');
@@ -7,6 +6,7 @@ const userService = require('../services/userService');
 const slotService = require('../services/slotService');
 const sendSuccessRes = require('../util/sendSuccessRes');
 const { SLOT_CREATED } = require('../util/successMessages');
+const { database } = require('../config/database');
 
 /**
  * For book a new slot.
@@ -24,7 +24,7 @@ const slotController = {
     }
     let transaction;
     try {
-      transaction = await Sequelize.transaction();
+      transaction = await database.transaction();
       const createdUser = await userService.createUser(req.body, transaction);
       const createdSlot = await slotService.createSlot(
         req.body,
@@ -37,8 +37,8 @@ const slotController = {
         req.body,
         transaction
       );
+      await transaction.commit();
       const { code, name, message } = SLOT_CREATED;
-
       return sendSuccessRes(res, message, code, name, createdSlot);
     } catch (error) {
       await transaction.rollback();
