@@ -14,11 +14,7 @@ const app = express();
 
 relations();
 connectDb();
-app.use(
-  cors({
-    origin:['https://calendly-clone-backend-vvat.vercel.app','https://661942e114a1d127408c42b6--sharpener-eventify.netlify.app/','https://calendly-clone-frontend-three.vercel.app/']
-  })
-);
+app.use(cors())
 app.use(helmet());
 app.use(express.json());
 
