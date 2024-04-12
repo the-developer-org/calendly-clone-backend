@@ -25,3 +25,9 @@ exports.findEvent = {
     eventId: Joi.number().required(),
   }),
 };
+exports.defaultLink = {
+  body: Joi.object().keys({
+    mode: Joi.string().required(),
+    meetingLink: Joi.string().required(),
+  }),
+};

@@ -21,7 +21,6 @@ const connectDb = async () => {
       message: `Database successfully conected on ${serverStartTime}`,
     });
   } catch (error) {
-    console.log(error);
     Logger.log('error', {
       errorCode: 'POSTGRESERROR',
       message: 'Error while connecting to Postgres server',

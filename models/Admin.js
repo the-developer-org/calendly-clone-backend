@@ -1,5 +1,5 @@
 const { database } = require('../config/database');
-const { INTEGER, STRING } = require('sequelize');
+const { INTEGER, STRING, JSONB } = require('sequelize');
 
 const Admin = database.define('admin', {
   id: {
@@ -19,6 +19,10 @@ const Admin = database.define('admin', {
   password: {
     type: STRING,
     allowNull: false,
+  },
+  defaultMode: {
+    type: JSONB,
+    allowNull: true,
   },
 });
 

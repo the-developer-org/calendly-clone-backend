@@ -1,3 +1,4 @@
+const adminService = require('../services/adminService');
 const eventService = require('../services/eventService');
 const ApiError = require('../util/ApiError');
 const { catchAsync } = require('../util/async');
@@ -73,6 +74,30 @@ const eventController = {
   deleteEvent: catchAsync(async (req, res) => {
     await eventService.deleteEvent(req.body, req.admin);
     const { code, name, message } = EVENT_DELETED;
+    return sendSuccessRes(res, message, code, name);
+  }),
+  /**
+   * For setting default mode and link of for the admin.
+   * @function setDefaultMode
+   * @param {Object} req - The request object.
+   * @param {Object} res - The response object.
+   * @returns {Promise} Resolves when event-fetching process completes.
+   */
+  setDefaultMode: catchAsync(async (req, res) => {
+    await adminService.setDefaultMode(req.body, req.admin);
+    const { code, name, message } = MODE_UPDATED;
+    return sendSuccessRes(res, message, code, name);
+  }),
+  /**
+   * For removing default mode and link of for the admin.
+   * @function setDefaultMode
+   * @param {Object} req - The request object.
+   * @param {Object} res - The response object.
+   * @returns {Promise} Resolves when event-fetching process completes.
+   */
+  deleteDefaultMode: catchAsync(async (req, res) => {
+    await adminService.removeDefaultMode(req.body, req.admin);
+    const { code, name, message } = MODE_UPDATED;
     return sendSuccessRes(res, message, code, name);
   }),
 };
