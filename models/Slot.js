@@ -1,5 +1,5 @@
 const { database } = require('../config/database');
-const { STRING, INTEGER } = require('sequelize');
+const { STRING, INTEGER, TIME, DATE } = require('sequelize');
 
 const Slot = database.define('slot', {
   id: {
@@ -8,16 +8,16 @@ const Slot = database.define('slot', {
     autoIncrement: true,
     primaryKey: true,
   },
-  date: {
-    type: STRING,
+  eventDate: {
+    type: DATE,
     allowNull: false,
   },
-  startTime: {
-    type: STRING,
+  eventStartTime: {
+    type: TIME,
     allowNull: false,
   },
-  endTime: {
-    type: STRING,
+  eventEndTime: {
+    type: TIME,
     allowNull: false,
   },
 });

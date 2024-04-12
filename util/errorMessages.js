@@ -69,3 +69,32 @@ exports.TOKEN_MISSING = {
   name: 'UNAUTHORIZED',
   message: 'Token not found',
 };
+
+exports.USER_NOT_FOUND = {
+  code: 404,
+  name: 'NOTFOUND',
+  message: 'User not found',
+};
+
+exports.SLOT_NOT_FOUND = {
+  code: 404,
+  name: 'NOTFOUND',
+  message: 'Slot not found',
+};
+
+exports.EVENT_NOT_FOUND = {
+  code: 404,
+  name: 'NOTFOUND',
+  message: 'Event not found',
+};
+
+exports.SLOT_BOOK_ERROR = {
+  code: 500,
+  name: 'INTERNAL_SERVER_ERROR',
+  message: 'Error while booking the slot',
+};
+exports.EMAIL_FAILED = {
+  code: 503,
+  name: 'SERVICE_UNAVAILABLE',
+  message: "Couldn't send email",
+};

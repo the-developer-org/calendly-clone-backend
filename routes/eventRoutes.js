@@ -4,11 +4,24 @@ const { validate } = require('../middlewares/validate');
 const eventValidation = require('../validations/eventValidation');
 const router = express.Router();
 const auth = require('../middlewares/auth');
+
 router.post(
-  '/createevent',
+  '/create-event',
   auth,
   validate(eventValidation.createEvent),
   eventController.createEvent
 );
 
+router.get('/get-events', auth, eventController.getEvents);
+router.get(
+  '/get-event/:eventId',
+  validate(eventValidation.findEvent),
+  eventController.getEventByEventId
+);
+router.post(
+  '/delete-event',
+  auth,
+  validate(eventValidation.deleteEvent),
+  eventController.deleteEvent
+);
 module.exports = router;

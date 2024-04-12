@@ -1,5 +1,5 @@
 exports.verifyEmailTemplate = (verificationEmailUrl) => {
-    return `
+  return `
     <html lang="en">
         <head>
             <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -397,4 +397,32 @@ exports.verifyEmailTemplate = (verificationEmailUrl) => {
             </table>
         </body>
     </html>`;
+};
+exports.slotEmailTemplate = (name, time, link) => {
+  return `<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Confirmation</title>
+</head>
+<body>
+    <div style="background-color: white; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); border-radius: 0.5rem; padding: 1.5rem; border: 1px solid #e2e8f0; max-width: 36rem;">
+        <h2 style="font-size: 1.25rem; font-weight: 600; color: #2d3748; margin-bottom: 0.5rem;">Booking Confirmed!</h2>
+        <p style="color: #4a5568;">Your slot for the <span style="font-weight: 600;">${name}</span> has been successfully booked.</p>
+        <div style="margin-top: 1rem;">
+            <h3 style="font-weight: 600; color: #2d3748;">Slot Details:</h3>
+            <ul style="list-style-type: disc; padding-left: 1.5rem;">
+                <li>Time: <span style="font-weight: 400; color: #718096;">${time}</span></li>
+                <li>Event: <span style="font-weight: 400; color: #718096;">${name}</span></li>
+                <li>Meeting Link: <a href="${link}" style="color: #4299e1; text-decoration: none;">${link}</a></li>
+            </ul>
+        </div>
+        <div style="margin-top: 1rem;">
+            <a href="${link}" style="display: inline-block; background-color: #4299e1; color: white; padding: 0.5rem 1rem; border-radius: 0.25rem; text-decoration: none; transition: background-color 0.2s;">Join Meeting</a>
+        </div>
+    </div>
+</body>
+</html>
+
+    `;
 };

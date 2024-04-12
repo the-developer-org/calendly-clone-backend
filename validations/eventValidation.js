@@ -14,3 +14,14 @@ exports.createEvent = {
     description: Joi.string().required(),
   }),
 };
+
+exports.deleteEvent = {
+  body: Joi.object().keys({
+    eventId: Joi.number().required(),
+  }),
+};
+exports.findEvent = {
+  params: Joi.object().keys({
+    eventId: Joi.number().required(),
+  }),
+};
