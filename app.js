@@ -14,7 +14,7 @@ const app = express();
 
 relations();
 connectDb();
-app.use(cors());
+app.use(cors())
 app.use(helmet());
 app.use(express.json());
 
