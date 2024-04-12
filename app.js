@@ -16,7 +16,7 @@ relations();
 connectDb();
 app.use(
   cors({
-    origin: 'http://localhost:5173',
+    origin: 'https://calendly-clone-frontend-three.vercel.app/',
     methods: '*',
   })
 );
