@@ -35,7 +35,7 @@ exports.FETCH_ALL_EVENTS = {
 };
 
 exports.EVENT_DELETED = {
-  code: 204,
+  code: 200,
   name: 'OK',
   message: 'Event deleted successfully',
 };
@@ -44,4 +44,10 @@ exports.FETCH_EVENT_BYID = {
   code: 200,
   name: 'OK',
   message: 'Event fetched successfully',
+};
+
+exports.FETCH_ALL_SLOTS = {
+  code: 200,
+  name: 'OK',
+  message: 'All slot data fetched successfully',
 };

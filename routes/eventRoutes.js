@@ -14,11 +14,11 @@ router.post(
 
 router.get('/get-events', auth, eventController.getEvents);
 router.get(
-  '/get-event-byeventid',
+  '/get-event/:eventId',
   validate(eventValidation.findEvent),
   eventController.getEventByEventId
 );
-router.delete(
+router.post(
   '/delete-event',
   auth,
   validate(eventValidation.deleteEvent),

@@ -58,10 +58,10 @@ const eventService = {
   },
 
   updateEventSlotAvalibility: async (event, body, transaction) => {
-    const { date, eventStartTime, eventEndTime } = body;
+    const { eventDate, eventStartTime, eventEndTime } = body;
     const updatedSlots = updateAvailability(
       event.availableSlots,
-      date,
+      eventDate,
       eventStartTime,
       eventEndTime
     );

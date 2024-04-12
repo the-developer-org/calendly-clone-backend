@@ -9,4 +9,7 @@ module.exports = () => {
 
   Event.hasMany(Slot, { onDelete: 'CASCADE' });
   Slot.belongsTo(Event);
+
+  User.hasMany(Slot, { onDelete: 'CASCADE' });
+  Slot.belongsTo(User);
 };

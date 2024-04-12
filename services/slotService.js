@@ -1,4 +1,6 @@
+const Event = require('../models/Event');
 const Slot = require('../models/Slot');
+const User = require('../models/User');
 
 const slotService = {
   createSlot: async (body, transaction = null, user, event) => {
@@ -14,6 +16,19 @@ const slotService = {
       },
       options
     );
+  },
+  getBookedSlots: async ({ id }) => {
+    return Event.findAll({
+      attributes: ['name', 'mode'],
+      where: { adminId: id, isActive: true },
+      include: [
+        {
+          model: Slot,
+          attributes: ['eventDate', 'eventStartTime', 'eventEndTime', 'id'],
+          include: [{ model: User, attributes: ['email', 'name'] }],
+        },
+      ],
+    });
   },
 };
 

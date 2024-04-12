@@ -132,20 +132,14 @@ const createSlots = (
 };
 
 const updateAvailability = (availableSlots, dateObject, startTime, endTime) => {
-  const dateKey = dateObject.toISOString();
-  const slots = availableSlots[dateKey];
+  const slots = availableSlots[dateObject];
 
   if (!slots) {
     return null;
   }
 
   slots.forEach((slot) => {
-    const slotStartTime = new Date(slot.startTime).getTime();
-    const slotEndTime = new Date(slot.endTime).getTime();
-    const rangeStartTime = new Date(startTime).getTime();
-    const rangeEndTime = new Date(endTime).getTime();
-
-    if (slotStartTime >= rangeStartTime && slotEndTime <= rangeEndTime) {
+    if (slot.startTime === startTime && slot.availability) {
       slot.availability = false;
     }
   });
