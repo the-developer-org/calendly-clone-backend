@@ -15,7 +15,9 @@ const app = express();
 relations();
 connectDb();
 app.use(
-  cors('*')
+  cors({
+    origin:'https://calendly-clone-backend-vvat.vercel.app'
+  })
 );
 app.use(helmet());
 app.use(express.json());
