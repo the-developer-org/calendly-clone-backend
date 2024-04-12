@@ -38,12 +38,14 @@ const slotController = {
         req.body,
         transaction
       );
-      await emailService.sendBookingConfirmationEmail(req.body);
-      await transaction.commit();
-      const { code, name, message } = SLOT_CREATED;
-      return sendSuccessRes(res, message, code, name, createdSlot);
+      const data = await emailService.sendBookingConfirmationEmail(req.body);
+      if (data) {
+        await transaction.commit();
+        const { code, name, message } = SLOT_CREATED;
+        return sendSuccessRes(res, message, code, name, createdSlot);
+      }
     } catch (error) {
-      console.log(errors);
+      console.log(error);
       await transaction.rollback();
       const { code, message, name } = SLOT_BOOK_ERROR;
       throw new ApiError(code, message, name);

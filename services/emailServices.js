@@ -31,7 +31,7 @@ const emailService = {
       return data;
     }
     const { code, message, name } = EMAIL_FAILED;
-    throw new ApiError(code, message, name);
+    return new ApiError(code, message, name);
   },
 };
 
