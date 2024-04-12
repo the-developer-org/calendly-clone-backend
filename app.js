@@ -14,12 +14,7 @@ const app = express();
 
 relations();
 connectDb();
-app.use(
-  cors({
-    origin: 'http://localhost:5173',
-    methods: '*',
-  })
-);
+app.use(cors());
 app.use(helmet());
 app.use(express.json());
 
