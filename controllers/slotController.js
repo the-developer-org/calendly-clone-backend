@@ -7,6 +7,7 @@ const slotService = require('../services/slotService');
 const sendSuccessRes = require('../util/sendSuccessRes');
 const { SLOT_CREATED, FETCH_ALL_SLOTS } = require('../util/successMessages');
 const { database } = require('../config/database');
+const emailService = require('../services/emailServices');
 
 /**
  * For book a new slot.
@@ -37,10 +38,12 @@ const slotController = {
         req.body,
         transaction
       );
+      await emailService.sendBookingConfirmationEmail(req.body);
       await transaction.commit();
       const { code, name, message } = SLOT_CREATED;
       return sendSuccessRes(res, message, code, name, createdSlot);
     } catch (error) {
+      console.log(errors);
       await transaction.rollback();
       const { code, message, name } = SLOT_BOOK_ERROR;
       throw new ApiError(code, message, name);

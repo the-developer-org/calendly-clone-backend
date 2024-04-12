@@ -8,6 +8,8 @@ exports.bookSlot = {
     eventDate: Joi.date().required(),
     eventStartTime: Joi.string().required(),
     eventEndTime: Joi.string().required(),
+    eventName: Joi.string().required(),
+    eventLink: Joi.string().required(),
   }),
 };
 
