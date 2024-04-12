@@ -93,3 +93,8 @@ exports.SLOT_BOOK_ERROR = {
   name: 'INTERNAL_SERVER_ERROR',
   message: 'Error while booking the slot',
 };
+exports.EMAIL_FAILED = {
+  code: 503,
+  name: 'SERVICE_UNAVAILABLE',
+  message: "Couldn't send email",
+};
