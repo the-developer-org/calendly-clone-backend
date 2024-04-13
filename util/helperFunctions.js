@@ -65,15 +65,12 @@ const createSlots = (
   slotDuration,
   bufferTime
 ) => {
-  console.log(startDate);
-  console.log(endDate);
   const startDateTime = parseTimeInput(startTime).getTime();
   const endDateTime = parseTimeInput(endTime).getTime();
-  const bufferTimeMs = bufferTime * 60 * 1000; // Convert buffer time to milliseconds
+  const bufferTimeMs = bufferTime * 60 * 1000;
 
-  // Check if buffer time is longer than time difference between start and end time
   if (endDateTime - startDateTime <= bufferTimeMs) {
-    return null; // Buffer time is too long, return null
+    return null;
   }
 
   const slots = {};
@@ -81,9 +78,8 @@ const createSlots = (
   const totalDurationMinutes = totalDurationMs / (1000 * 60);
   const slotsPerDay = Math.floor(totalDurationMinutes / slotDuration);
 
-  // Handle edge case: If slotsPerDay is 0, buffer time is too long
   if (slotsPerDay <= 0) {
-    return null; // Buffer time is too long, return null
+    return null;
   }
 
   for (
@@ -101,13 +97,12 @@ const createSlots = (
       });
       currentTime.setMinutes(currentTime.getMinutes() + slotDuration);
 
-      // Check if the calculated end time exceeds the event end time
       if (currentTime.getTime() + bufferTimeMs > endDateTime) {
         break;
       }
 
       const slotEndTime = currentTime.toLocaleTimeString('en-US', {
-        hour12: false, // Use 24-hour format
+        hour12: false,
         hour: '2-digit',
         minute: '2-digit',
       });
@@ -147,7 +142,6 @@ const updateAvailability = (availableSlots, dateObject, startTime, endTime) => {
   return availableSlots;
 };
 
-// exporting
 module.exports = {
   generateHashPassword,
   generateToken,
