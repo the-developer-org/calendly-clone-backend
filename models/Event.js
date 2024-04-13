@@ -56,6 +56,10 @@ const Event = database.define('event', {
     type: STRING,
     allowNull: false,
   },
+  color: {
+    type: STRING,
+    allowNull: false,
+  },
 });
 
 module.exports = Event;

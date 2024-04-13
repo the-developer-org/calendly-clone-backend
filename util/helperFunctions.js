@@ -122,7 +122,6 @@ const createSlots = (
       currentTime.setMinutes(currentTime.getMinutes() + bufferTime);
     }
   }
-
   return slots;
 };
 
