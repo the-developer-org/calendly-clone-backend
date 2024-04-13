@@ -60,23 +60,9 @@ const slotController = {
    * @returns {Promise} Resolves when slot book process completes.
    */
   getBookedSlots: catchAsync(async (req, res) => {
-    const bookedSlots = await slotService.getBookedSlots(req.admin);
-    const transformedData = bookedSlots.flatMap((event) => {
-      return event.slots.map((slot) => {
-        return {
-          eventName: event.name,
-          mode: event.mode,
-          eventDate: slot.eventDate,
-          eventStartTime: slot.eventStartTime,
-          eventEndTime: slot.eventEndTime,
-          id: slot.id,
-          userEmail: slot.user.email,
-          userName: slot.user.name,
-        };
-      });
-    });
+    const bookedSlots = await slotService.getBookedSlots(req.admin, req.query);
     const { code, name, message } = FETCH_ALL_SLOTS;
-    return sendSuccessRes(res, message, code, name, transformedData);
+    return sendSuccessRes(res, message, code, name, bookedSlots);
   }),
 };
 

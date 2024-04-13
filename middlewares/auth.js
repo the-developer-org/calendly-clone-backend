@@ -13,7 +13,6 @@ const auth = async (req, res, next) => {
     const { code, message, name } = DECODE_TOKEN_ERROR;
     next(new ApiError(code, message, name));
   }
-
   const admin = await authService.verifyAdmin(decodedToken);
   req.admin = admin;
   next();

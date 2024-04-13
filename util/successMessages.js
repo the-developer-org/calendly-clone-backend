@@ -51,3 +51,8 @@ exports.FETCH_ALL_SLOTS = {
   name: 'OK',
   message: 'All slot data fetched successfully',
 };
+exports.MODE_UPDATED = {
+  code: 201,
+  name: 'CREATED',
+  message: 'Defaults updated successfully',
+};

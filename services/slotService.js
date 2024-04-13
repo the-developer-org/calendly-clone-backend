@@ -17,18 +17,40 @@ const slotService = {
       options
     );
   },
-  getBookedSlots: async ({ id }) => {
-    return Event.findAll({
-      attributes: ['name', 'mode'],
-      where: { adminId: id, isActive: true },
+  getBookedSlots: async ({ id }, { current: page, rows: pageSize }) => {
+    const limit = pageSize;
+    const offset = (page - 1) * pageSize;
+    const result = await Slot.findAndCountAll({
+      attributes: ['eventDate', 'eventStartTime', 'eventEndTime', 'id'],
       include: [
         {
-          model: Slot,
-          attributes: ['eventDate', 'eventStartTime', 'eventEndTime', 'id'],
-          include: [{ model: User, attributes: ['email', 'name'] }],
+          model: Event,
+          attributes: ['name', 'mode'],
+          where: { adminId: id, isActive: true },
+        },
+        {
+          model: User,
+          attributes: ['email', 'name'],
         },
       ],
+      limit: limit,
+      offset: offset,
+      order: [['eventDate', 'ASC']],
     });
+    return {
+      total: result.count,
+      totalPages: Math.ceil(result.count / pageSize),
+      slots: result.rows.map((slot) => ({
+        slotId: slot.id,
+        eventName: slot.event.name,
+        mode: slot.event.mode,
+        eventDate: slot.eventDate,
+        eventStartTime: slot.eventStartTime,
+        eventEndTime: slot.eventEndTime,
+        userEmail: slot.user.email,
+        userName: slot.user.name,
+      })),
+    };
   },
 };
 
