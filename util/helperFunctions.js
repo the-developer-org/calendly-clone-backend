@@ -88,10 +88,10 @@ const createSlots = (
     currentDate.setDate(currentDate.getDate() + 1)
   ) {
     let currentTime = parseTimeInput(startTime);
-    slots[currentDate] = [];
+    slots[currentDate.toDateString()] = [];
     for (let i = 0; i < slotsPerDay; i++) {
       const slotStartTime = currentTime.toLocaleTimeString('en-US', {
-        hour12: false, // Use 24-hour format
+        hour12: false,
         hour: '2-digit',
         minute: '2-digit',
       });
@@ -107,7 +107,7 @@ const createSlots = (
         minute: '2-digit',
       });
 
-      slots[currentDate].push({
+      slots[currentDate.toDateString()].push({
         date: new Date(
           currentDate.getFullYear(),
           currentDate.getMonth(),
@@ -127,7 +127,7 @@ const createSlots = (
 };
 
 const updateAvailability = (availableSlots, dateObject, startTime, endTime) => {
-  const slots = availableSlots[dateObject];
+  const slots = availableSlots[dateObject.toDateString()];
 
   if (!slots) {
     return null;
