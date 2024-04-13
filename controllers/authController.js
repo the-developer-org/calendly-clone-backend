@@ -58,6 +58,7 @@ const authController = {
       token,
       name: admin.name,
       email: admin.email,
+      defaultMode: admin.defaultMode,
     };
     return sendSuccessRes(res, message, code, name, result);
   }),
@@ -82,6 +83,7 @@ const authController = {
       name: admin.name,
       token: req.body.token,
       email: admin.email,
+      defaultMode: admin.defaultMode,
     };
     return sendSuccessRes(res, message, code, name, result);
   }),

@@ -13,6 +13,7 @@ const {
   FETCH_ALL_EVENTS,
   EVENT_DELETED,
   FETCH_EVENT_BYID,
+  MODE_UPDATED,
 } = require('../util/successMessages');
 
 const eventController = {
