@@ -19,6 +19,7 @@ const eventService = {
       meetingLink,
       bufferTime,
       description,
+      color,
     } = body;
 
     const slots = createSlots(
@@ -45,6 +46,7 @@ const eventService = {
       bufferTime,
       availableSlots: slots,
       mode,
+      color,
       adminId: admin.id,
     });
   },

@@ -12,6 +12,7 @@ exports.createEvent = {
     meetingLink: Joi.string().required(),
     bufferTime: Joi.number().required(),
     description: Joi.string().required(),
+    color: Joi.string().required(),
   }),
 };
 
