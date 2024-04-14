@@ -58,7 +58,6 @@ const Event = database.define('event', {
   },
   color: {
     type: STRING,
-    allowNull: false,
   },
 });
 

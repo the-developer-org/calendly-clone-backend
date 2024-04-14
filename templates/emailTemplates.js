@@ -1,4 +1,5 @@
 exports.verifyEmailTemplate = (verificationEmailUrl) => {
+  console.log(verificationEmailUrl);
   return `
     <html lang="en">
         <head>
@@ -162,7 +163,7 @@ exports.verifyEmailTemplate = (verificationEmailUrl) => {
                                     visibility: hidden;
                                     width: 0;
                                 "
-                                >Welcome to KharchaPani.IO. Verify your email address to avail all the features of KharachaPani.IO</span
+                                >Welcome to Eventify. Verify your email address to avail all the features of Eventify</span
                             >
                             <table
                                 role="presentation"
@@ -210,7 +211,7 @@ exports.verifyEmailTemplate = (verificationEmailUrl) => {
                                                 margin: 0;
                                                 margin-bottom: 16px;
                                             ">
-                                            Unlock the full potential of KharachaPani.IO and let your budget buddy effortlessly track your expenses! 🚀 Click the link below to step into a world of seamlessly managed finances. Your financial journey is about to get a whole lot better!
+                                            Unlock the full potential of Eventify and let your appointement game go to new level! 🚀 Click the link below to step into a world of seamlessly managed appointment booking. Your journey is about to get a whole lot better!
                                         </p>
                                         <table
                                             role="presentation"

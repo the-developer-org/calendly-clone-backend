@@ -18,7 +18,7 @@ exports.PASSWORD_MISSMATCH = {
   name: 'UNAUTHORIZED',
   message: 'Incorrect Password',
 };
-exports.EMAIL_NOT_VERIFIED = {
+exports.EMAIL_IS_NOT_VERIFIED = {
   code: 403,
   name: 'FORBIDDEN',
   message: 'Email is not verified',
@@ -40,7 +40,7 @@ exports.GENERATE_TOKEN_ERROR = {
   name: 'INTERNAL_SERVER_ERROR',
   message: 'Error while generating token',
 };
-exports.EMAIL_ERROR = {
+exports.EMAIL_SENDING_ERROR = {
   code: 500,
   name: 'INTERNAL_SERVER_ERROR',
   message: 'Error sending verification email',

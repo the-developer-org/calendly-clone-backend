@@ -15,7 +15,7 @@ const database = new Sequelize(name, username, password, {
 
 const connectDb = async () => {
   try {
-    await database.sync( { alter : true } );
+    await database.sync({ alter: true });
     const serverStartTime = moment().format();
     Logger.log('info', {
       message: `Database successfully conected on ${serverStartTime}`,
