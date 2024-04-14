@@ -6,6 +6,7 @@ const {
   USER_NOT_FOUND,
   PASSWORD_MISSMATCH,
   GENERATE_HASH_ERROR,
+  EMAIL_NOT_VERIFIED,
 } = require('../util/errorMessages');
 const {
   generateHashPassword,
@@ -52,6 +53,10 @@ const authService = {
     const findAdmin = await adminService.findAdminByEmail(email);
     if (!findAdmin) {
       const { code, message, name } = USER_NOT_FOUND;
+      throw new ApiError(code, message, name);
+    }
+    if (!findAdmin.isEmailVerified) {
+      const { code, message, name } = EMAIL_NOT_VERIFIED;
       throw new ApiError(code, message, name);
     }
     const isValidPassword = await checkPassword(password, findAdmin.password);

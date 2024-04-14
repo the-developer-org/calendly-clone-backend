@@ -9,6 +9,7 @@ const { v4: uuidv4 } = require('uuid');
 const {
   GENERATE_TOKEN_ERROR,
   DECODE_TOKEN_ERROR,
+  EMAIL_ERROR,
 } = require('../util/errorMessages');
 const {
   ACCOUNT_CREATED,
@@ -41,7 +42,7 @@ const authController = {
         await transaction.commit();
         return sendSuccessRes(res, message, code, name, result);
       }
-      const { code, error, message } = GENERATE_TOKEN_ERROR;
+      const { code, error, message } = EMAIL_ERROR;
       throw new ApiError(code, message, error);
     } catch (error) {
       await transaction.rollback();

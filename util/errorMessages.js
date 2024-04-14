@@ -40,6 +40,11 @@ exports.GENERATE_TOKEN_ERROR = {
   name: 'INTERNAL_SERVER_ERROR',
   message: 'Error while generating token',
 };
+exports.EMAIL_ERROR = {
+  code: 500,
+  name: 'INTERNAL_SERVER_ERROR',
+  message: 'Error sending verification email',
+};
 exports.DECODE_TOKEN_ERROR = {
   code: 500,
   name: 'INTERNAL_SERVER_ERROR',
