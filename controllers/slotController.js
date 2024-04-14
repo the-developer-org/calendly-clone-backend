@@ -23,9 +23,8 @@ const slotController = {
       const { code, name, message } = EVENT_NOT_FOUND;
       throw new ApiError(code, message, name);
     }
-    let transaction;
+    let transaction = await database.transaction();
     try {
-      transaction = await database.transaction();
       const createdUser = await userService.createUser(req.body, transaction);
       const createdSlot = await slotService.createSlot(
         req.body,
@@ -45,7 +44,6 @@ const slotController = {
         return sendSuccessRes(res, message, code, name, createdSlot);
       }
     } catch (error) {
-      console.log(error);
       await transaction.rollback();
       const { code, message, name } = SLOT_BOOK_ERROR;
       throw new ApiError(code, message, name);
