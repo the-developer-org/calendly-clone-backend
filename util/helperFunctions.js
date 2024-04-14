@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const config = require('../config/config');
-
+const moment = require('moment-timezone');
 // helper function to encode email,password
 const generateToken = ({ email, password }) => {
   return jwt.sign({ email, password }, config.jwt_secret);
@@ -65,6 +65,8 @@ const createSlots = (
   slotDuration,
   bufferTime
 ) => {
+  const ISTStartDate = moment.tz(startDate, 'Asia/Kolkata');
+  const ISTEndTime = moment.tz(endDate, 'Asia/Kolkata');
   const startDateTime = parseTimeInput(startTime).getTime();
   const endDateTime = parseTimeInput(endTime).getTime();
   const bufferTimeMs = bufferTime * 60 * 1000;
@@ -83,8 +85,8 @@ const createSlots = (
   }
 
   for (
-    let currentDate = new Date(startDate);
-    currentDate <= new Date(endDate);
+    let currentDate = new Date(ISTStartDate);
+    currentDate <= new Date(ISTEndTime);
     currentDate.setDate(currentDate.getDate() + 1)
   ) {
     let currentTime = parseTimeInput(startTime);

@@ -18,8 +18,10 @@ const authService = {
    * @param {Object} adminData - The admin data including name, email, and password.
    * @returns {Promise<Object>} A Promise resolving to the created admin object.
    */
-  createAdmin: async ({ name, email, password }) => {
-    if (await adminService.findAdminByEmail(email)) {
+  createAdmin: async ({ name, email, password }, token, transaction = null) => {
+    const options = transaction ? { transaction } : {};
+    const existingUser = await adminService.findAdminByEmail(email);
+    if (existingUser) {
       const { code, message, name } = EMAIL_ALREADY_IN_USE;
       throw new ApiError(code, message, name);
     }
@@ -29,8 +31,15 @@ const authService = {
       const { code, message, name } = GENERATE_HASH_ERROR;
       throw new ApiError(code, message, name);
     }
-
-    return Admin.create({ name, email, password });
+    return Admin.create(
+      {
+        name: name,
+        email: email,
+        password: password,
+        emailVerificationToken: token,
+      },
+      options
+    );
   },
 
   /**

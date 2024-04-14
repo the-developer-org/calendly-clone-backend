@@ -8,6 +8,7 @@ const config = {
       host: process.env.DB_HOST_DEV,
     },
     jwt_secret: process.env.JWT_SECRET_DEV,
+    api_url: process.env.BASE_API_DEV,
   },
   production: {
     port: process.env.PROD_PORT,
@@ -18,6 +19,7 @@ const config = {
       host: process.env.DB_HOST_PROD,
     },
     jwt_secret: process.env.JWT_SECRET_PROD,
+    api_url: process.env.BASE_API_PROD,
   },
 };
 

@@ -3,6 +3,9 @@ const { catchAsync } = require('../util/async');
 const sendSuccessRes = require('../util/sendSuccessRes');
 const ApiError = require('../util/ApiError');
 const authService = require('../services/authService');
+const adminService = require('../services/adminService');
+const emailService = require('../services/emailServices');
+const { v4: uuidv4 } = require('uuid');
 const {
   GENERATE_TOKEN_ERROR,
   DECODE_TOKEN_ERROR,
@@ -12,6 +15,7 @@ const {
   LOGIN_SUCCESS,
   USER_VERFIED,
 } = require('../util/successMessages');
+const { database } = require('../config/database');
 
 const authController = {
   /**
@@ -23,20 +27,26 @@ const authController = {
    */
 
   signUp: catchAsync(async (req, res) => {
-    await authService.createAdmin(req.body);
-    const token = generateToken(req.body);
-    if (!token) {
+    const token = uuidv4();
+    let transaction = await database.transaction();
+    try {
+      await authService.createAdmin(req.body, token, transaction);
+      const email = await emailService.sendVerificationEmail(req.body, token);
+      if (email) {
+        const { code, name, message } = ACCOUNT_CREATED;
+        const result = {
+          name: req.body.name,
+          email: req.body.email,
+        };
+        await transaction.commit();
+        return sendSuccessRes(res, message, code, name, result);
+      }
       const { code, error, message } = GENERATE_TOKEN_ERROR;
       throw new ApiError(code, message, error);
+    } catch (error) {
+      await transaction.rollback();
+      throw new ApiError(error.statusCode, error.message, error.name);
     }
-    const { code, name, message } = ACCOUNT_CREATED;
-    const result = {
-      token,
-      name: req.body.name,
-      email: req.body.email,
-    };
-
-    return sendSuccessRes(res, message, code, name, result);
   }),
 
   /**
@@ -86,6 +96,30 @@ const authController = {
       defaultMode: admin.defaultMode,
     };
     return sendSuccessRes(res, message, code, name, result);
+  }),
+  verifyEmail: catchAsync(async (req, res) => {
+    const user = await adminService.verifyUser(req.params.token);
+    if (!user) {
+      // Prepare HTML for unauthorized access or failed verification
+      const htmlResponse = `<html>
+        <head><title>Email Verification Failed</title></head>
+        <body>
+          <h1>Verification Failed</h1>
+          <p>Your email could not be verified. Please ensure you have used the correct verification link or contact support.</p>
+        </body>
+      </html>`;
+      res.status(204).send(htmlResponse);
+    } else {
+      // Prepare HTML for successful verification
+      const htmlResponse = `<html>
+        <head><title>Email Verified</title></head>
+        <body>
+          <h1>Verification Successful</h1>
+          <p>Thank you! Your email has been successfully verified.</p>
+        </body>
+      </html>`;
+      res.status(200).send(htmlResponse);
+    }
   }),
 };
 
