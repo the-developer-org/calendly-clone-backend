@@ -65,70 +65,75 @@ const createSlots = (
   slotDuration,
   bufferTime
 ) => {
-  const ISTStartDate = moment.tz(startDate, 'Asia/Kolkata');
-  const ISTEndTime = moment.tz(endDate, 'Asia/Kolkata');
-  const startDateTime = parseTimeInput(startTime).getTime();
-  const endDateTime = parseTimeInput(endTime).getTime();
+  const format = 'HH:mm';
+  const ISTStartDate = moment.tz(startDate, 'Asia/Kolkata').startOf('day');
+  const ISTEndDate = moment.tz(endDate, 'Asia/Kolkata').startOf('day');
+  const startMoment = moment(startTime, format);
+  const endMoment = moment(endTime, format);
   const bufferTimeMs = bufferTime * 60 * 1000;
+  const slotDurationMs = slotDuration * 60 * 1000;
 
-  if (endDateTime - startDateTime <= bufferTimeMs) {
+  if (endMoment.diff(startMoment) <= bufferTimeMs) {
     return null;
   }
 
   const slots = {};
-  const totalDurationMs = endDateTime - startDateTime - bufferTimeMs;
-  const totalDurationMinutes = totalDurationMs / (1000 * 60);
-  const slotsPerDay = Math.floor(totalDurationMinutes / slotDuration);
-
-  if (slotsPerDay <= 0) {
-    return null;
-  }
 
   for (
-    let currentDate = new Date(ISTStartDate);
-    currentDate <= new Date(ISTEndTime);
-    currentDate.setDate(currentDate.getDate() + 1)
+    let currentDate = ISTStartDate.clone();
+    currentDate.isSameOrBefore(ISTEndDate);
+    currentDate.add(1, 'days')
   ) {
-    let currentTime = parseTimeInput(startTime);
-    slots[currentDate.toDateString()] = [];
-    for (let i = 0; i < slotsPerDay; i++) {
-      const slotStartTime = currentTime.toLocaleTimeString('en-US', {
-        hour12: false,
-        hour: '2-digit',
-        minute: '2-digit',
-      });
-      currentTime.setMinutes(currentTime.getMinutes() + slotDuration);
+    let currentTime = currentDate.clone().set({
+      hour: startMoment.hour(),
+      minute: startMoment.minute(),
+    });
+    const currentDayKey = currentDate.format('l');
+    slots[currentDayKey] = [];
 
-      if (currentTime.getTime() + bufferTimeMs > endDateTime) {
+    while (
+      currentTime <
+      currentDate.clone().set({
+        hour: endMoment.hour(),
+        minute: endMoment.minute(),
+      })
+    ) {
+      const slotStartTime = currentTime.format(format);
+      currentTime.add(slotDuration, 'minutes');
+
+      if (
+        currentTime
+          .clone()
+          .add(bufferTime, 'minutes')
+          .isAfter(
+            currentDate.clone().set({
+              hour: endMoment.hour(),
+              minute: endMoment.minute(),
+            })
+          )
+      ) {
         break;
       }
 
-      const slotEndTime = currentTime.toLocaleTimeString('en-US', {
-        hour12: false,
-        hour: '2-digit',
-        minute: '2-digit',
-      });
+      const slotEndTime = currentTime.format(format);
 
-      slots[currentDate.toDateString()].push({
-        date: new Date(
-          currentDate.getFullYear(),
-          currentDate.getMonth(),
-          currentDate.getDate()
-        ),
+      slots[currentDayKey].push({
+        date: currentDate.toDate(),
         startTime: slotStartTime,
         endTime: slotEndTime,
         duration: `${slotDuration} Minutes`,
         availability: true,
       });
 
-      currentTime.setMinutes(currentTime.getMinutes() + bufferTime);
+      currentTime.add(bufferTime, 'minutes');
     }
   }
+  console.log(slots);
   return slots;
 };
 
 const updateAvailability = (availableSlots, dateObject, startTime, endTime) => {
-  const slots = availableSlots[dateObject.toDateString()];
+  const slots = availableSlots[dateObject.format('l')];
 
   if (!slots) {
     return null;
